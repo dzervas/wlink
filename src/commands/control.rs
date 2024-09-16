@@ -28,14 +28,14 @@ impl ProbeInfo {
 }
 impl Response for ProbeInfo {
     fn from_payload(bytes: &[u8]) -> Result<Self> {
-        if bytes.len() < 3 {
+        if bytes.len() < 2 {
             return Err(crate::error::Error::InvalidPayloadLength);
         }
         Ok(Self {
             major_version: bytes[0],
             minor_version: bytes[1],
             // Only avaliable in newer version of firmware
-            variant: if bytes.len() == 4 {
+            variant: if bytes.len() == 3 {
                 WchLinkVariant::try_from_u8(bytes[2])?
             } else {
                 WchLinkVariant::Ch549
